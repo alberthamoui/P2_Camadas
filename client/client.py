@@ -7,7 +7,14 @@ import numpy as np
 # como fazer pra reconhecer comeco e final?
     # criar um negocio d bytes b'\x??' pra comeco e pra fim
 
+
+#coloquei xfa como byte de espaco ja que o server vai receber tudo junto, n eh otimizado mas funciona
+#ira ter byte de comeco e byte de final, pro server reconhecer (esta certo)
+
 serialName = "COM7"
+comeco = b'\xc'
+
+final = b'\xf'
 
 def main():
     try:
