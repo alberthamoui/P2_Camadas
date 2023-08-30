@@ -1,4 +1,4 @@
-from comands import *
+from comandsClient import *
 from enlace import *
 import time
 import numpy as np
@@ -12,9 +12,7 @@ import numpy as np
 #ira ter byte de comeco e byte de final, pro server reconhecer (esta certo)
 
 serialName = "COM7"
-comeco = b'\xc'
 
-final = b'\xf'
 
 def main():
     try:
@@ -26,25 +24,20 @@ def main():
 
 
 
-        txBuffer, tam = sorteiaComando() 
-        print("O array de bytes len de {}" .format(tam))
+        txBuffer, tam, tam_esperado = sorteiaComando() 
+        print("O array de bytes len de {}" .format(tam_esperado))
 
         com1.sendData(np.asarray(txBuffer))  
         
+
+        # print('np.asarray(txBuffer)\n\n\n{}\n\n\n'.format(np.asarray(txBuffer)))
+
         
-        #acesso aos bytes recebidos
+        #acesso aos bytes recebi7dos
         txLen = len(txBuffer)
         rxBuffer, nRx = com1.getData(txLen)
 
-
-        print("Salvando dados no arquivo :")
-        print(" - {}".format(imagew))
-        f = open(imagew, 'wb')
-        f.write(rxBuffer)
-        
-        # Fecha arquivo de imagem
-        f.close()
-
+        # print("\n\n\n\n\n\n\nRECEBA {}\n\n\n\n\n" .format(rxBuffer))
 
         print("recebeu {} bytes" .format(len(rxBuffer)))
         
