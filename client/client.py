@@ -13,6 +13,9 @@ import numpy as np
 
 serialName = "COM7"
 
+comeco = b'\x0a'
+final = b'\x0f'
+
 
 def main():
     try:
@@ -24,10 +27,32 @@ def main():
 
 
 
-        txBuffer, tam, tam_esperado = sorteiaComando() 
-        print("O array de bytes len de {}" .format(tam_esperado))
+        
 
-        com1.sendData(np.asarray(txBuffer))  
+
+        # Sacrifício
+        time.sleep(.2)
+        com1.sendData(b'00')
+        time.sleep(1)
+
+        tam, txBuffer = sorteiaComando() 
+        print("O array de bytes len de {}" .format(tam))
+
+
+        # # Limpa
+        # print("esperando 1 byte de sacrifício")
+        # rxBuffer, nRx = com1.getData(1)
+        # com1.rx.clearBuffer()
+        # time.sleep(.1)
+
+
+
+        com1.sendData(np.asarray(comeco))  
+        for i in range(len(txBuffer)):
+            com1.sendData(np.asarray(tam[i]))
+            time.sleep(0.1)
+            com1.sendData(np.asarray(txBuffer[i]))
+        com1.sendData(np.asarray(final))
         
 
         # print('np.asarray(txBuffer)\n\n\n{}\n\n\n'.format(np.asarray(txBuffer)))
@@ -37,7 +62,7 @@ def main():
         txLen = len(txBuffer)
         rxBuffer, nRx = com1.getData(txLen)
 
-        # print("\n\n\n\n\n\n\nRECEBA {}\n\n\n\n\n" .format(rxBuffer))
+        print("\n\n\n\n\n\n\nRECEBA tx:\n{}\n\nrx:\n{}\n\n" .format(txBuffer,rxBuffer))
 
         print("recebeu {} bytes" .format(len(rxBuffer)))
         
