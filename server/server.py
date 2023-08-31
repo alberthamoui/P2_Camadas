@@ -59,6 +59,7 @@ def main():
         print("ops! :-\\")
         print(erro)
         com1.disable()
+    print(recebidos)
         
 
     #so roda o main quando for executado do terminal ... se for chamado dentro de outro modulo nao roda
