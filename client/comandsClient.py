@@ -12,7 +12,7 @@ def sorteiaComando():
         tam.append(len(escolha).to_bytes(1, byteorder='big'))
         txbuffer.append(escolha)
         tamn = int.from_bytes(tam[i], byteorder='big')
-        # print(f'Comando {i+1}: {txbuffer[i]} ou {txbuffer[i].hex().upper()} // Tamanho: {tamn} ')
+        #print(f'Comando {i+1}: {txbuffer[i]} ou {txbuffer[i].hex().upper()} // Tamanho: {tamn} ')
 
     return tam, txbuffer
 

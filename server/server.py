@@ -2,7 +2,11 @@ from enlace import *
 import time
 import numpy as np
 
-serialName = "COM7"
+serialName = "COM3"
+recebidos = []
+comeco = b'\x0a'
+final = b'\x0f'
+
 
 def main():
     try:
@@ -15,32 +19,35 @@ def main():
         com1.enable()
         print("Abriu a comunicação")
         
+        # Sacrificio
+        print("esperando 1 byte de sacrifício")
+        tamanho, nRx = com1.getData(1)
+        com1.rx.clearBuffer()
+        time.sleep(.1)
 
+        contador = 0
+        bandeira = True
 
-        print("meu array de bytes tem tamanho {}" .format(len(txBuffer)))
-        
-            
-        com1.sendData(np.asarray(txBuffer))
-        
-        
-        
-
-
-        txLen = len(txBuffer)
-        rxBuffer, nRx = com1.getData(txLen)
-
-
-        print("recebeu {} bytes" .format(len(rxBuffer)))
-        
-        for i in range(len(rxBuffer)):
-            print("recebeu {}" .format(rxBuffer[i]))
-
+        while bandeira:
             if contador == 0:
-                txSize = com1.tx.getStatus()
-                print('enviou = {}' .format(txSize))
+               com1.rx.clearBuffer()
+               com1.sendData(np.asarray(comeco))  
+               com1.rx.clearBuffer()
+               time.sleep(.1)
+               print('comecou')
+            else:
+                numero = com1.getData(1)
 
-            contador = 1
-            print(contador)
+                numeroint = int.from_bytes(numero[0], byteorder="big")
+                print(numero)
+                rxBuffer, nRx = com1.getData(numeroint)
+
+                info = com1.getData(numeroint)
+
+                if info == final:
+                    com1.sendData(np.asarray(final))
+                    break
+            contador+=1
         
         # Encerra comunicação
         print("-------------------------")
