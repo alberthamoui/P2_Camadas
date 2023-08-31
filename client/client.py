@@ -32,24 +32,26 @@ def main():
 
         # Sacrifício
         time.sleep(.2)
-        com1.sendData(b'00')
+        com1.sendData(b'\x00')
         time.sleep(1)
 
         tam, txBuffer = sorteiaComando() 
-        print("O array de bytes len de {}" .format(tam))
+        print("O array de bytes len de {}" .format(txBuffer))
 
 
         
         com1.sendData(np.asarray(comeco))  
         for i in range(len(txBuffer)):
             com1.sendData(np.asarray(tam[i]))
-            #print(tam[i])
+            time.sleep(1)
+            print(tam[i])
             time.sleep(0.1)
             com1.sendData(np.asarray(txBuffer[i]))
-            #print(txBuffer[i])
+            time.sleep(1)
+            print(txBuffer[i])
         com1.sendData(np.asarray(final))
         #time.sleep(1)
-        txSize = com1.tx.getStatus()
+        txSize = len(txBuffer)
         print("enviou {}".format(txSize))
 
         
@@ -59,7 +61,7 @@ def main():
 
 
         rxBuffer, nRx = com1.getData(1)
-        print("recebeu {}, acabou a transmissão")
+        print("recebeu {}, acabou a transmissão".format(nRx))
         
         print('b')
 

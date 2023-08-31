@@ -41,7 +41,7 @@ def main():
                 numeroint = int.from_bytes(numero[0], byteorder="big")
                 print(numero)
                 rxBuffer, nRx = com1.getData(numeroint)
-
+                time.sleep(1)
                 info = com1.getData(numeroint)
 
                 if info == final:
