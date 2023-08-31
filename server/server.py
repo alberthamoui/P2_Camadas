@@ -29,27 +29,25 @@ def main():
         bandeira = True
 
         while bandeira:
-            if contador == 0:
-               com1.rx.clearBuffer()
-               com1.sendData(np.asarray(comeco))  
-               com1.rx.clearBuffer()
-               time.sleep(.1)
-               print('comecou')
-            else:
-                numero = com1.getData(1)
+            bufferLen = com1.rx.getBufferLen()
+            numero, _ = com1.getData(bufferLen)
+            com1.rx.clearBuffer()
+            time.sleep(1)
+            if len(numero) != 0:
+                print("recebeu {}".format(numero))
+                if numero != comeco and numero != final:
+                    recebidos.append(numero)
+                    contador+=1
+            if numero == final:
+                bandeira = False
 
-                numeroint = int.from_bytes(numero[0], byteorder="big")
-                print(numero)
-                rxBuffer, nRx = com1.getData(numeroint)
-                time.sleep(1)
-                info = com1.getData(numeroint)
-                print("recebeu {}".format(rxBuffer))
+        print("recebidos{}\n\n".format(recebidos))
+        print("recebeu {} bytes".format(contador))
 
-                if info == final:
-                    com1.sendData(np.asarray(final))
-                    break
-            contador+=1
-        
+        contadorBytes = contador.to_bytes(1, byteorder='little')
+        com1.sendData(contadorBytes)
+        print("enviou")
+
         # Encerra comunicação
         print("-------------------------")
         print("Comunicação encerrada")
