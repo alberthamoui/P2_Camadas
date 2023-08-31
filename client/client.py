@@ -43,11 +43,11 @@ def main():
         com1.sendData(np.asarray(comeco))  
         for i in range(len(txBuffer)):
             com1.sendData(np.asarray(tam[i]))
-            time.sleep(1)
+            time.sleep(0.5)
             print(tam[i])
             time.sleep(0.1)
             com1.sendData(np.asarray(txBuffer[i]))
-            time.sleep(1)
+            time.sleep(0.5)
             print(txBuffer[i])
         com1.sendData(np.asarray(final))
         #time.sleep(1)
@@ -61,24 +61,14 @@ def main():
 
 
         rxBuffer, nRx = com1.getData(1)
-        print("recebeu {}, acabou a transmissão".format(nRx))
+        print("recebeu {}, acabou a transmissão".format(rxBuffer))
         
-        print('b')
+
 
         # print("\n\n\n\n\n\n\nRECEBA tx:\n{}\n\nrx:\n{}\n\n" .format(txBuffer,rxBuffer))
 
         #print("recebeu {} bytes" .format(len(rxBuffer)))
         
-        for i in range(len(rxBuffer)):
-            print("recebeu {}" .format(rxBuffer[i]))
-
-            if contador == 0:
-                txSize = com1.tx.getStatus()
-                print('enviou = {}' .format(txSize))
-                # contador = 0
-
-            contador = 1
-            print(contador)
         
         # Encerra comunicação
         print("-------------------------")

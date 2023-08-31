@@ -2,7 +2,7 @@ from enlace import *
 import time
 import numpy as np
 
-serialName = "COM3"
+serialName = "COM7"
 recebidos = []
 comeco = b'\x0a'
 final = b'\x0f'
@@ -43,6 +43,7 @@ def main():
                 rxBuffer, nRx = com1.getData(numeroint)
                 time.sleep(1)
                 info = com1.getData(numeroint)
+                print("recebeu {}".format(rxBuffer))
 
                 if info == final:
                     com1.sendData(np.asarray(final))
