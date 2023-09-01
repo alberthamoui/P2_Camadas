@@ -55,7 +55,7 @@ def main():
         flagTimeOut = True
         timeout = time.time() + 5
         while time.time()<timeout:
-            print(timeout-time.time())
+            # print(timeout-time.time())
             if com1.rx.getBufferLen()>0:
                 rxBuffer, _ = com1.getData(1)
                 esperado = int.from_bytes(rxBuffer, byteorder='big')
@@ -68,6 +68,8 @@ def main():
                     if esperado != n_sorteado:
                         print("ERRO: NAO RECEBEU O QUE ESPERAVA")
                         print("esperava {} e recebeu {}" .format(n_sorteado, esperado))
+                        flagTimeOut = False
+
         if flagTimeOut:
             print("ERRO: PASSOU 5 SEGUNDO")
 
