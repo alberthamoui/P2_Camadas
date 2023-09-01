@@ -48,29 +48,33 @@ def main():
         com1.sendData(np.asarray(final))
         #time.sleep(1)
         print("enviou {}".format(n_sorteado))
-
-        
-        
-
         #print('np.asarray(txBuffer)\n\n\n{}\n\n\n'.format(np.asarray(txBuffer)))
 
-        rxBuffer = 'inicio'
-        rxBuffer, nRx = com1.getData(1)
+
+        # ERROS
+        flagTimeOut = True
+        timeout = time.time() + 5
+        while time.time()<timeout:
+            print(timeout-time.time())
+            if com1.rx.getBufferLen()>0:
+                rxBuffer, _ = com1.getData(1)
+                esperado = int.from_bytes(rxBuffer, byteorder='big')
+
+                if esperado == n_sorteado:
+                    print("recebeu {}, acabou a transmissão".format(esperado))
+                    flagTimeOut = False
+                    break
+                else:
+                    if esperado != n_sorteado:
+                        print("ERRO: NAO RECEBEU O QUE ESPERAVA")
+                        print("esperava {} e recebeu {}" .format(n_sorteado, esperado))
+        if flagTimeOut:
+            print("ERRO: PASSOU 5 SEGUNDO")
 
 
-        # ERRO 1
-        time.sleep(5)
-        if rxBuffer == 'inicio':
-            print("ERRO: NAO RECEBEU NADA")
 
 
 
-        # ERRO 2
-        esperado = int.from_bytes(rxBuffer, byteorder='big')
-        print("recebeu {}, acabou a transmissão".format(esperado))
-        if esperado != n_sorteado:
-            print("ERRO: NAO RECEBEU O QUE ESPERAVA")
-            print("esperava {} e recebeu {}" .format(n_sorteado, esperado))
 
         # print("\n\n\n\n\n\n\nRECEBA tx:\n{}\n\nrx:\n{}\n\n" .format(txBuffer,rxBuffer))
 

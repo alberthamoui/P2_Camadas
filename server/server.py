@@ -22,6 +22,7 @@ def main():
         # Sacrificio
         print("esperando 1 byte de sacrifício")
         tamanho, nRx = com1.getData(1)
+
         com1.rx.clearBuffer()
         time.sleep(.1)
 
