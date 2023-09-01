@@ -54,12 +54,23 @@ def main():
 
         #print('np.asarray(txBuffer)\n\n\n{}\n\n\n'.format(np.asarray(txBuffer)))
 
-
+        rxBuffer = 'inicio'
         rxBuffer, nRx = com1.getData(1)
+
+
+        # ERRO 1
+        time.sleep(5)
+        if rxBuffer == 'inicio':
+            print("ERRO: NAO RECEBEU NADA")
+
+
+
+        # ERRO 2
         esperado = int.from_bytes(rxBuffer, byteorder='big')
         print("recebeu {}, acabou a transmissão".format(esperado))
-        
-
+        if esperado != n_sorteado:
+            print("ERRO: NAO RECEBEU O QUE ESPERAVA")
+            print("esperava {} e recebeu {}" .format(n_sorteado, esperado))
 
         # print("\n\n\n\n\n\n\nRECEBA tx:\n{}\n\nrx:\n{}\n\n" .format(txBuffer,rxBuffer))
 
