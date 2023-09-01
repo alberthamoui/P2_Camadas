@@ -10,8 +10,6 @@ final = b'\x0f'
 
 def main():
     try:
-        contador = 0
-
         print("Iniciou o main")
         com1 = enlace(serialName)
         
@@ -26,7 +24,7 @@ def main():
         com1.rx.clearBuffer()
         time.sleep(.1)
 
-        contador = 0
+        contador = 1
         bandeira = True
 
         while bandeira:
@@ -46,6 +44,7 @@ def main():
         print("recebeu {} bytes".format(contador))
 
         contadorBytes = contador.to_bytes(1, byteorder='little')
+        time.sleep(6)
         com1.sendData(contadorBytes)
         print("enviou")
 
